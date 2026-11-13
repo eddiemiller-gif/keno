@@ -1,0 +1,8 @@
+dist/
+site.tar.gz
+
+public/
+.vercel/
+outputs/
+node_modules/
+.env*

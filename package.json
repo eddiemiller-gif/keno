@@ -1,0 +1,12 @@
+{
+  "name": "eddies-keno-data",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "22.x" },
+  "scripts": {
+    "build": "node scripts/build-vercel.mjs",
+    "build:worker": "node scripts/build.mjs",
+    "test": "node scripts/test.mjs && node scripts/test-vercel.mjs",
+    "validate": "node scripts/validate-artifact.mjs"
+  }
+}

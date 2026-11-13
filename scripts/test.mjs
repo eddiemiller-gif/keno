@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+const source=await readFile('worker/index.js','utf8');
+const {default:worker,normalize}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+const numbers=Array.from({length:20},(_,i)=>i+1);
+assert.equal(normalize([{drawNumber:2,winningNumbers:numbers},{drawNumber:2,winningNumbers:numbers}]).length,1);
+assert.throws(()=>normalize([{drawNumber:1,winningNumbers:[1,1]}]));
+const page=await worker.fetch(new Request('https://test/'));assert.equal(page.status,200);
+const html=await page.text();new vm.Script(html.match(/<script>([\s\S]*?)<\/script>/)[1]);
+assert.equal((await worker.fetch(new Request('https://test/api/results?date=bad'))).status,400);
+const original=globalThis.fetch;globalThis.fetch=async()=>Response.json({draws:[{drawNumber:1,winningNumbers:numbers,bonus:3}]});
+const result=await worker.fetch(new Request('https://test/api/results?date=2026-11-12'));assert.equal((await result.json()).draws.length,1);
+globalThis.fetch=async()=>{throw Error('offline')};assert.equal((await worker.fetch(new Request('https://test/api/results?date=2026-11-12'))).status,502);globalThis.fetch=original;
+console.log('Passed: normalization, deduplication, invalid draws, browser script syntax, date validation, API success and outage.');
