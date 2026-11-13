@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node scripts/build-vercel.mjs",
     "build:worker": "node scripts/build.mjs",
-    "test": "node scripts/test.mjs && node scripts/test-vercel.mjs",
+    "test": "node scripts/test.mjs && node scripts/test-vercel.mjs && node scripts/test-combinations.mjs",
     "validate": "node scripts/validate-artifact.mjs"
   }
 }
