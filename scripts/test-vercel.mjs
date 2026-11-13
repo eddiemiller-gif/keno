@@ -8,7 +8,7 @@ execFileSync(process.execPath, ['scripts/build-vercel.mjs'], { stdio: 'inherit' 
 const html = await readFile('public/index.html', 'utf8');
 assert.match(html, /Eddie's Keno Data!/);
 assert.match(html, /fetch\('\/api\/results\?date='/);
-for (const name of ['brand-art.jpg', 'venmo-qr.jpg']) {
+for (const name of ['brand-art.jpg', 'venmo-qr.jpg', 'keno-background.png']) {
   const expected = await worker.fetch(new Request('https://test/' + name));
   assert.deepEqual(await readFile('public/' + name), Buffer.from(await expected.arrayBuffer()));
 }
